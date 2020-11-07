@@ -5,10 +5,41 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+      - restore_cache:
+         keys:
+           - pkg
+      - run:
+          name: Checkout
+          command: |
+            ./make.sh CHECKOUT
+      - save_cache:
+          key: pkg
+          paths:
+            - ./UnityPackage
       - run:
           name: Package
           command: |
-            ./make.sh
+            ./make.sh PACKAGE
+      - save_cache:
+          key: pkg
+          paths:
+            - ./UnityPackage
+      - run:
+          name: Index
+          command: |
+            ./make.sh INDEX
+      - save_cache:
+          key: pkg
+          paths:
+            - ./UnityPackage
+      - run:
+          name: Push
+          command: |
+            ./make.sh PUSH
+      - save_cache:
+          key: pkg
+          paths:
+            - ./UnityPackage
 workflows:
   package:
     jobs:
