@@ -34,8 +34,10 @@ if [ -z "$1" ] || [ "$1" == "PACKAGE" ]
 then
     rm -rf $OUT_PATH/* || exit 1
     ## Examples~
-    cp -r $SRC_PATH/Assets/UMA/Examples $OUT_PATH/Examples~/ || exit 1
+    cp -r $SRC_PATH/Assets/UMA/Examples $OUT_PATH/Examples~ || exit 1
+    cp $SRC_PATH/Assets/UMA/Examples.meta $OUT_PATH/Examples~.meta || exit 1
     cp -r $SRC_PATH/Assets/UMA/Getting\ Started $OUT_PATH/Examples~/ || exit 1
+    cp $SRC_PATH/Assets/UMA/Getting\ Started.meta $OUT_PATH/Examples~/ || exit 1
 
     ## package.json
     DEPENDENCIES=$(cat UMAProject/Packages/manifest.json | jq .dependencies)
@@ -60,12 +62,17 @@ then
     ## Editor
     mkdir -p $OUT_PATH/Editor || exit 1
     cp -r $SRC_PATH/Assets/UMA/Editor $OUT_PATH/Editor || exit 1
+    cp $SRC_PATH/Assets/UMA/Editor.meta $OUT_PATH/Editor.meta || exit 1
 
     ## Runtime
     mkdir -p $OUT_PATH/Runtime || exit 1
+    cp $SRC_PATH/Assets/UMA.meta $OUT_PATH/Runtime.meta || exit 1
     cp -r $SRC_PATH/Assets/UMA/Core $OUT_PATH/Runtime/ || exit 1
+    cp $SRC_PATH/Assets/UMA/Core.meta $OUT_PATH/Runtime/ || exit 1
     cp -r $SRC_PATH/Assets/UMA/Content $OUT_PATH/Runtime/ || exit 1
+    cp $SRC_PATH/Assets/UMA/Content.meta $OUT_PATH/Runtime/ || exit 1
     cp -r $SRC_PATH/Assets/UMA/InternalDataStore $OUT_PATH/Runtime/ || exit 1
+    cp $SRC_PATH/Assets/UMA/InternalDataStore.meta $OUT_PATH/Runtime/ || exit 1
 
 
     ## Tests
