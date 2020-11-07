@@ -5,10 +5,47 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+      - restore_cache:
+         keys:
+           - pkg
+      - run:
+          name: Checkout
+          command: |
+            ./make.sh CHECKOUT
+      - save_cache:
+          key: pkg
+          paths:
+            - ./UnityPackage
       - run:
           name: Package
           command: |
-            ./make.sh
+            ./make.sh PACKAGE
+      - save_cache:
+          key: pkg
+          paths:
+            - ./UnityPackage
+      - run:
+          name: Index
+          command: |
+            ./make.sh INDEX
+      - save_cache:
+          key: pkg
+          paths:
+            - ./UnityPackage
+      - run:
+          name: Push
+          command: |
+            cd ./UnityPackage
+            git config credential.helper 'cache --timeout=120'
+            git config user.email "oparaskos@gmail.com"
+            git config user.name "Deployment Bot"
+            git commit --allow-empty -m "Trigger deployment"
+            # Push quietly to prevent showing the token in log
+            git push -f -q https://${PACKAGE_GITHUB_TOKEN}@github.com/oparaskos/com.github.umasteeringgroup.uma.uma.git HEAD
+      - save_cache:
+          key: pkg
+          paths:
+            - ./UnityPackage
 workflows:
   package:
     jobs:
