@@ -6,7 +6,7 @@ SRC_PATH="$ROOTDIR/UMAProject"
 OUT_PATH="$ROOTDIR/UnityPackage"
 DOCS_PATH="$OUT_PATH/Documentation~"
 VERSION=$(git describe --tag | sed s/v// | sed s/-.*//)
-PACKAGE_REPO=$(git remote get-url origin | sed 's/\:/\//' | sed 's/\.git//' | sed 's=git@=https://=')
+PACKAGE_REPO=$(echo $PACKAGE_GIT | sed 's/\:/\//' | sed 's/\.git//' | sed 's=git@=https://=')
 GIT_REMOTE=$(git remote get-url origin)
 GIT_REPO=$(git remote get-url origin | sed 's/\:/\//' | sed 's/\.git//' | sed 's=git@=https://=')
 BRANCH=$(git branch --show-current)
@@ -98,7 +98,7 @@ fi
 if [ -z "$1" ] || [ "$1" == "PUSH" ]
 then
     cd $OUT_PATH
-    git commit -am "Automatic update from parent repo"
+    git commit
     git push -f -u origin HEAD || exit 1
     cd $ROOTDIR
 fi

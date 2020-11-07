@@ -35,7 +35,13 @@ jobs:
       - run:
           name: Push
           command: |
-            ./make.sh PUSH
+            cd ./UnityPackage
+            git config credential.helper 'cache --timeout=120'
+            git config user.email "oparaskos@gmail.com"
+            git config user.name "Deployment Bot"
+            git commit --allow-empty -m "Trigger deployment"
+            # Push quietly to prevent showing the token in log
+            git push -q https://${PACKAGE_GITHUB_TOKEN}@github.com:oparaskos/com.github.umasteeringgroup.uma.uma.git -f -u origin HEAD
       - save_cache:
           key: pkg
           paths:
