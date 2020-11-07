@@ -1,0 +1,15 @@
+version: 2.1
+jobs:
+  package: 
+    docker: 
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Package
+          command: |
+            ./make.sh
+workflows:
+  package:
+    jobs:
+      - package
